@@ -6,13 +6,24 @@ export class FluxDaemon extends Chart {
   constructor(scope: Construct, name: string) {
     super(scope, name);
 
+
     new Flux(this, 'flux', {
-      arguments: [],
       namespace: 'flux',
+      name: 'flux',
+      tag: '1.19.0',
       prometheusOperator: true,
       replicas: 1,
-      tag: '1.19.0',
-      name: 'flux',
+      arguments: [
+        '--memcached-service=',
+        '--ssh-keygen-dir=/var/fluxd/keygen',
+        '--git-url=git@github.com:rafaribe/cdk8s-k3s-gitops.git',
+        '--git-branch=master',
+        '--git-label=flux',
+        '--git-user=flux',
+        '--git-email=flux@rafaribe.com',
+        '--git-poll-interval=5m',
+        '--sync-garbage-collection'
+      ],
     });
   }
 }
