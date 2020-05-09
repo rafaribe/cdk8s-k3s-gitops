@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  config.json: |-
+    {
+      "nodePathMap":[
+        {
+          "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
+          "paths":["/opt/local-path-provisioner"]
+        },
+        {
+          "node":"sala",
+          "paths":["/mnt/NAS1/cluster", "/mnt/NAS2/cluster"]
+        },
+        {
+          "node":"escritorio",
+          "paths":["/mnt/data"]
+        }
+      ]
+    }
+kind: ConfigMap
+metadata:
+  name: local-path-config
+  namespace: kube-system
