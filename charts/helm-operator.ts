@@ -6,9 +6,9 @@ export class HelmOperator extends Chart {
   constructor(scope: Construct, name: string) {
     super(scope, name);
 
-    new HelmRelease(this, 'fluxhr', {
+    new HelmRelease(this, 'helm-operator', {
       metadata: {
-        name: 'flux',
+        name: 'helm-operator',
         namespace: 'flux',
         annotations: {
           ['fluxcd.io/automated']: 'false',

@@ -1,5 +1,8 @@
 import { Construct } from 'constructs';
-import { PersistentVolumeClaim,  Quantity} from '../imports/k8s';
+import {
+  PersistentVolumeClaim,
+  Quantity,
+} from '../imports/k8s';
 
 export interface LocalPathPvcOptions {
   /**
@@ -31,7 +34,9 @@ export interface LocalPathPvcOptions {
   readonly accessModes: string[];
 }
 
-const constructId = 'local-path-pvc-' + Math.random().toString(36).slice(2)
+const constructId =
+  'local-path-pvc-' +
+  Math.random().toString(36).slice(2);
 
 export class LocalPathPVC extends Construct {
   constructor(
@@ -40,21 +45,30 @@ export class LocalPathPVC extends Construct {
   ) {
     super(scope, constructId);
 
-    const accessModes : string[] = options.accessModes || ['ReadWriteMany'];
+    const accessModes: string[] = options.accessModes || [
+      'ReadWriteMany',
+    ];
 
-    new PersistentVolumeClaim(this, options.name, {
-      metadata: {
-        name: options.name,
-        namespace: options.namespace,
+    new PersistentVolumeClaim(
+      this,
+      options.name,
+      {
+        metadata: {
+          name: options.name,
+          namespace: options.namespace,
+        },
+        spec: {
+          accessModes: accessModes,
+          storageClassName: 'local-path',
+          resources: {
+            requests: {
+              storage: Quantity.fromString(
+                options.size,
+              ),
+            },
+          },
+        },
       },
-      spec: {
-        accessModes: accessModes,
-        storageClassName: 'local-path',
-        resources:{
-          requests: { 'storage': Quantity.fromString(options.size) }
-        }
-      }
-    });
-
+    );
   }
 }

@@ -4,7 +4,7 @@ output: cluster/charts
 imports:
   # Default cdk8s
   - k8s
-  # FluxHr Helm Operator
+  # Flux Helm Operator
   - https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml
   #
   #Prometheus CRDs - Beta Version

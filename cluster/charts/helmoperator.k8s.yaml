@@ -4,7 +4,7 @@ metadata:
   annotations:
     fluxcd.io/automated: "false"
     fluxcd.io/ignore: "false"
-  name: flux
+  name: helm-operator
   namespace: flux
 spec:
   chart:

@@ -10,7 +10,7 @@ export class PVC extends Chart {
       accessModes: ['ReadWriteMany'],
       name: 't',
       namespace: 'local-path-test',
-      size: '10Gi'
+      size: '10Gi',
     });
   }
 }
