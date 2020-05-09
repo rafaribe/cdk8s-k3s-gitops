@@ -21,15 +21,15 @@ metadata:
   name: flux
 rules:
   - apiGroups:
-      - '*'
+      - "*"
     resources:
-      - '*'
+      - "*"
     verbs:
-      - '*'
+      - "*"
   - nonResourceURLs:
-      - '*'
+      - "*"
     verbs:
-      - '*'
+      - "*"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -64,7 +64,17 @@ spec:
         name: flux
     spec:
       containers:
-        - image: docker.io/fluxcd/flux:1.19.0
+        - args:
+            - --memcached-service=
+            - --ssh-keygen-dir=/var/fluxd/keygen
+            - --git-url=git@github.com:rafaribe/cdk8s-k3s-gitops.git
+            - --git-branch=master
+            - --git-label=flux
+            - --git-user=flux
+            - --git-email=flux@rafaribe.com
+            - --git-poll-interval=5m
+            - --sync-garbage-collection
+          image: docker.io/fluxcd/flux:1.19.0
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:

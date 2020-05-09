@@ -6,7 +6,6 @@ export class FluxDaemon extends Chart {
   constructor(scope: Construct, name: string) {
     super(scope, name);
 
-
     new Flux(this, 'flux', {
       namespace: 'flux',
       name: 'flux',
@@ -22,7 +21,7 @@ export class FluxDaemon extends Chart {
         '--git-user=flux',
         '--git-email=flux@rafaribe.com',
         '--git-poll-interval=5m',
-        '--sync-garbage-collection'
+        '--sync-garbage-collection',
       ],
     });
   }
