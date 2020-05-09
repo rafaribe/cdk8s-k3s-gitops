@@ -1,0 +1,7 @@
+/lib/iot-app.ts
+/lib/java-app.test.ts
+/lib/java-app.ts
+/lib/nginx-app.ts
+/lib/utils.ts
+/node_modules/
+.idea

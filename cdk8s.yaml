@@ -1,0 +1,15 @@
+language: typescript
+app: node main.js
+output: cluster/charts
+imports:
+  # Default cdk8s
+  - k8s
+  # FluxHr Helm Operator
+  - https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml
+  #
+  #Prometheus CRDs - Beta Version
+  - https://github.com/coreos/prometheus-operator/blob/a850fe11be59ea71dd451a8d5f30fcb875576bc4/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+  - https://github.com/coreos/prometheus-operator/blob/a850fe11be59ea71dd451a8d5f30fcb875576bc4/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+  - https://github.com/coreos/prometheus-operator/blob/a850fe11be59ea71dd451a8d5f30fcb875576bc4/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+  - https://github.com/coreos/prometheus-operator/blob/a850fe11be59ea71dd451a8d5f30fcb875576bc4/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
+  - https://raw.githubusercontent.com/coreos/prometheus-operator/a850fe11be59ea71dd451a8d5f30fcb875576bc4/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml

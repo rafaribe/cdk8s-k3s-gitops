@@ -1,0 +1,176 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    name: flux
+  name: flux
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    name: flux
+  name: flux
+  namespace: flux
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    name: flux
+  name: flux
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+  - nonResourceURLs:
+      - '*'
+    verbs:
+      - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    name: flux
+  name: flux
+roleRef:
+  apiGroup: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  name: flux
+subjects:
+  - kind: ServiceAccount
+    name: flux
+    namespace: flux
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flux
+  namespace: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: flux
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: flux
+    spec:
+      containers:
+        - image: docker.io/fluxcd/flux:1.19.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: api/flux/v6/identity.pub
+              port: 3030
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+          name: flux
+          ports:
+            - containerPort: 3030
+          readinessProbe:
+            httpGet:
+              path: api/flux/v6/identity.pub
+              port: 3030
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: 50m
+              memory: 64Mi
+          volumeMounts:
+            - mountPath: /etc/fluxd/ssh
+              name: git-key
+            - mountPath: /etc/fluxd/keygen
+              name: git-keygen
+      serviceAccountName: flux
+      volumes:
+        - name: git-key
+          secret:
+            defaultMode: 400
+            secretName: flux-git-deploy
+        - emptyDir:
+            medium: Memory
+          name: git-keygen
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcached
+  namespace: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: memcached
+  template:
+    metadata:
+      labels:
+        name: memcached
+    spec:
+      containers:
+        - args:
+            - -m 512
+            - -I 5m
+            - -p 11211
+          image: memcached:1.6.5
+          name: memcached
+          ports:
+            - containerPort: 11211
+              name: clients
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsGroup: 11211
+            runAsUser: 11211
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memcached
+  namespace: flux
+spec:
+  ports:
+    - name: memcached
+      port: 11211
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: flux
+  name: flux
+  namespace: flux
+spec:
+  ports:
+    - name: http
+      port: 3030
+      protocol: TCP
+      targetPort: http
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    prometheus: monitoring
+  name: flux
+  namespace: flux
+spec:
+  endpoints:
+    - honorLabels: true
+      interval: 30s
+      path: /metrics
+      port: http
+  namespaceSelector:
+    matchNames:
+      - flux
+  selector:
+    matchLabels:
+      name: flux
