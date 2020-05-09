@@ -10,6 +10,8 @@ echo '🔥 Manifests Synthetized 🔥'
 cd ./cluster/charts/
 
 echo '🔨Hammering some workarrounds 🔨'
+# This replaces  config.json: | with  config.json: |-
+# Those damn chomping indicators
 sed -i '' -e 's/[\|]/\|-/g' localpathcfg.k8s.yaml
 
 echo '🌈Process Complete - Check out the Manifests on ./cluster🌈'
