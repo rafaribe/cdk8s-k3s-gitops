@@ -16,7 +16,7 @@
 ## Useful Commands
 
 - `npm run compile-synth` - This command runs `tsc` and `cdk8s synth` and outputs the `YAML` files into the
-  [dist](dist) folder.
+  [cluster/charts](cluster/charts) folder.
 - `yarn compile-synth`
 
 ## References:
