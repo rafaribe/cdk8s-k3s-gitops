@@ -4,8 +4,9 @@ import { Construct } from 'constructs';
 export class ChartBase extends Chart {
   constructor(scope: Construct, name: string) {
     super(scope, name);
+    //Declare Resources here
+
   }
-  // Copy paste template to make other chartss
 }
 
 const app = new App();
