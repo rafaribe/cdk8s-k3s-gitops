@@ -10,7 +10,7 @@ roleRef:
   kind: Role
   name: config-watcher
 subjects:
-- kind: ServiceAccount
-  name: controller
-- kind: ServiceAccount
-  name: speaker
+  - kind: ServiceAccount
+    name: controller
+  - kind: ServiceAccount
+    name: speaker

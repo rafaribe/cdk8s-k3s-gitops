@@ -8,15 +8,15 @@ metadata:
 spec:
   allowPrivilegeEscalation: false
   allowedCapabilities:
-  - NET_ADMIN
-  - NET_RAW
-  - SYS_ADMIN
+    - NET_ADMIN
+    - NET_RAW
+    - SYS_ADMIN
   fsGroup:
     rule: RunAsAny
   hostNetwork: true
   hostPorts:
-  - max: 7472
-    min: 7472
+    - max: 7472
+      min: 7472
   privileged: true
   runAsUser:
     rule: RunAsAny
@@ -25,4 +25,4 @@ spec:
   supplementalGroups:
     rule: RunAsAny
   volumes:
-  - '*'
+    - '*'

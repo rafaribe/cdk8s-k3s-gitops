@@ -22,25 +22,25 @@ spec:
         component: controller
     spec:
       containers:
-      - args:
-        - --port=7472
-        - --config=config
-        image: metallb/controller:v0.8.2
-        imagePullPolicy: IfNotPresent
-        name: controller
-        ports:
-        - containerPort: 7472
-          name: monitoring
-        resources:
-          limits:
-            cpu: 100m
-            memory: 100Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - all
-          readOnlyRootFilesystem: true
+        - args:
+            - --port=7472
+            - --config=config
+          image: metallb/controller:v0.8.2
+          imagePullPolicy: IfNotPresent
+          name: controller
+          ports:
+            - containerPort: 7472
+              name: monitoring
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
+            readOnlyRootFilesystem: true
       nodeSelector:
         beta.kubernetes.io/os: linux
       securityContext:
