@@ -17,6 +17,7 @@ export class FluxDaemon extends Chart {
         '--ssh-keygen-dir=/var/fluxd/keygen',
         '--git-url=git@github.com:rafaribe/cdk8s-k3s-gitops.git',
         '--git-branch=master',
+        '--git-path=cluster',
         '--git-label=flux',
         '--git-user=flux',
         '--git-email=flux@rafaribe.com',
