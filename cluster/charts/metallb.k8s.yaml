@@ -29,6 +29,6 @@ spec:
     existingConfig: metallb-config
     prometheus:
       prometheusRule:
-        enabled: true
+        enabled: false
       serviceMonitor:
-        enabled: true
+        enabled: false
