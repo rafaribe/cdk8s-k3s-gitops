@@ -4,12 +4,9 @@ metadata:
   name: pihole-local-dnsmasq-claim
   namespace: pihole
 spec:
-  storageClassName: sc-escritorio
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 500Mi
-  selector:
-    matchLabels:
-      directory: dnsmasq.d
