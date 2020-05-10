@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-tcp
+  annotations:
+    metallb.universe.tf/allow-shared-ip: 'true'
+  namespace: pihole
+spec:
+  selector:
+    app: pihole
+  ports:
+    - name: pihole-admin-tcp
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: pihole-dns-tcp
+      port: 53
+      targetPort: 53
+      protocol: TCP
+  type: LoadBalancer
+  loadBalancerIP: 192.168.1.230
+---
+#We need two services that share the same IP because kubernetes doesn't support UDP and TCP ports in the same service
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-udp
+  annotations:
+    metallb.universe.tf/allow-shared-ip: 'true'
+  namespace: pihole
+spec:
+  selector:
+    app: pihole
+  ports:
+    - name: pihole-admin-udp
+      port: 80
+      targetPort: 80
+      protocol: UDP
+    - name: pihole-dns-udp
+      port: 53
+      targetPort: 53
+      protocol: UDP
+  type: LoadBalancer
+  loadBalancerIP: 192.168.1.230
