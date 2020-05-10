@@ -60,8 +60,8 @@ export class Flux extends Construct {
     const label = { name: options.name };
 
     const limits = {
-      memory: Quantity.fromString('64Mi'),
-      cpu: Quantity.fromString('50m'),
+      memory: Quantity.fromString('256Mi'),
+      cpu: Quantity.fromString('150m'),
     };
 
     const fluxPort = 3030;
