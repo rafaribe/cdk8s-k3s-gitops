@@ -14,9 +14,7 @@ export class LocalPathConfig extends Chart {
       },
       data: {
         'config.json': fs
-          .readFileSync(
-            './config/local-path-config.json',
-          )
+          .readFileSync('./config/local-path-config.json')
           .toString(),
       },
     });

@@ -9,10 +9,7 @@ data:
         },
         {
           "node": "sala",
-          "paths": [
-            "/mnt/NAS1/cluster",
-            "/mnt/NAS2/cluster"
-          ]
+          "paths": ["/mnt/NAS1/cluster", "/mnt/NAS2/cluster"]
         },
         {
           "node": "escritorio",

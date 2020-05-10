@@ -1,8 +1,5 @@
 import { Construct } from 'constructs';
-import {
-  PersistentVolumeClaim,
-  Quantity,
-} from '../imports/k8s';
+import { PersistentVolumeClaim, Quantity } from '../imports/k8s';
 
 export interface LocalPathPvcOptions {
   /**
@@ -32,43 +29,40 @@ export interface LocalPathPvcOptions {
    * @default 2Gi
    */
   readonly accessModes: string[];
+
+  /**
+   * Persistent Volume Claim Name
+   *
+   * @default 2Gi
+   */
+  readonly matchLabels: { [key: string]: string };
 }
 
-const constructId =
-  'local-path-pvc-' +
-  Math.random().toString(36).slice(2);
+const constructId = 'local-path-pvc-' + Math.random().toString(36).slice(2);
 
 export class LocalPathPVC extends Construct {
-  constructor(
-    scope: Construct,
-    options: LocalPathPvcOptions,
-  ) {
+  constructor(scope: Construct, options: LocalPathPvcOptions) {
     super(scope, constructId);
 
-    const accessModes: string[] = options.accessModes || [
-      'ReadWriteMany',
-    ];
+    const accessModes: string[] = options.accessModes || ['ReadWriteMany'];
 
-    new PersistentVolumeClaim(
-      this,
-      options.name,
-      {
-        metadata: {
-          name: options.name,
-          namespace: options.namespace,
-        },
-        spec: {
-          accessModes: accessModes,
-          storageClassName: 'local-path',
-          resources: {
-            requests: {
-              storage: Quantity.fromString(
-                options.size,
-              ),
-            },
+    new PersistentVolumeClaim(this, options.name, {
+      metadata: {
+        name: options.name,
+        namespace: options.namespace,
+      },
+      spec: {
+        accessModes: accessModes,
+        storageClassName: 'local-path',
+        resources: {
+          requests: {
+            storage: Quantity.fromString(options.size),
           },
         },
+        selector: {
+          matchLabels: options.matchLabels,
+        },
       },
-    );
+    });
   }
 }

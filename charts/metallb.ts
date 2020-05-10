@@ -18,9 +18,7 @@ export class MetalLb extends Chart {
         namespace: metallbNamespace,
       },
       data: {
-        config: readFileSync(
-          './config/metallb-config.yaml',
-        ).toString(),
+        config: readFileSync('./config/metallb-config.yaml').toString(),
       },
     });
 
@@ -36,8 +34,7 @@ export class MetalLb extends Chart {
       spec: {
         releaseName: metallb,
         chart: {
-          repository:
-            'https://kubernetes-charts.storage.googleapis.com/',
+          repository: 'https://kubernetes-charts.storage.googleapis.com/',
           name: 'metallb',
           version: '0.12.0',
         },

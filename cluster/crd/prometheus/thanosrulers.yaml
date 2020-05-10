@@ -44,8 +44,8 @@ spec:
                 nodeAffinity:
                   description: Describes node affinity scheduling rules for the pod.
                   properties:
-                    ? preferredDuringSchedulingIgnoredDuringExecution
-                    : description:
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      description:
                         The scheduler will prefer to schedule pods to nodes
                         that satisfy the affinity expressions specified by this field,
                         but it may choose a node that violates one or more of the
@@ -158,8 +158,8 @@ spec:
                           - weight
                         type: object
                       type: array
-                    ? requiredDuringSchedulingIgnoredDuringExecution
-                    : description:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      description:
                         If the affinity requirements specified by this
                         field are not met at scheduling time, the pod will not be
                         scheduled onto the node. If the affinity requirements specified
@@ -267,8 +267,8 @@ spec:
                     Describes pod affinity scheduling rules (e.g. co-locate
                     this pod in the same node, zone, etc. as some other pod(s)).
                   properties:
-                    ? preferredDuringSchedulingIgnoredDuringExecution
-                    : description:
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      description:
                         The scheduler will prefer to schedule pods to nodes
                         that satisfy the affinity expressions specified by this field,
                         but it may choose a node that violates one or more of the
@@ -294,8 +294,8 @@ spec:
                                   A label query over a set of resources,
                                   in this case pods.
                                 properties:
-                                  ? matchExpressions
-                                  : description:
+                                  matchExpressions:
+                                    description:
                                       matchExpressions is a list of label
                                       selector requirements. The requirements are
                                       ANDed.
@@ -306,19 +306,19 @@ spec:
                                         an operator that relates the key and values.
                                       properties:
                                         key:
-                                          ? description
-                                          : key is the label key that the
+                                          description:
+                                            key is the label key that the
                                             selector applies to.
                                           type: string
                                         operator:
-                                          ? description
-                                          : operator represents a key's
+                                          description:
+                                            operator represents a key's
                                             relationship to a set of values. Valid
                                             operators are In, NotIn, Exists and DoesNotExist.
                                           type: string
                                         values:
-                                          ? description
-                                          : values is an array of string
+                                          description:
+                                            values is an array of string
                                             values. If the operator is In or NotIn,
                                             the values array must be non-empty. If
                                             the operator is Exists or DoesNotExist,
@@ -333,8 +333,8 @@ spec:
                                       type: object
                                     type: array
                                   matchLabels:
-                                    ? additionalProperties
-                                    : type: string
+                                    additionalProperties:
+                                      type: string
                                     description:
                                       matchLabels is a map of {key,value}
                                       pairs. A single {key,value} in the matchLabels
@@ -376,8 +376,8 @@ spec:
                           - weight
                         type: object
                       type: array
-                    ? requiredDuringSchedulingIgnoredDuringExecution
-                    : description:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      description:
                         If the affinity requirements specified by this
                         field are not met at scheduling time, the pod will not be
                         scheduled onto the node. If the affinity requirements specified
@@ -440,8 +440,8 @@ spec:
                                   type: object
                                 type: array
                               matchLabels:
-                                ? additionalProperties
-                                : type: string
+                                additionalProperties:
+                                  type: string
                                 description:
                                   matchLabels is a map of {key,value} pairs.
                                   A single {key,value} in the matchLabels map is equivalent
@@ -479,8 +479,8 @@ spec:
                     avoid putting this pod in the same node, zone, etc. as some other
                     pod(s)).
                   properties:
-                    ? preferredDuringSchedulingIgnoredDuringExecution
-                    : description:
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      description:
                         The scheduler will prefer to schedule pods to nodes
                         that satisfy the anti-affinity expressions specified by this
                         field, but it may choose a node that violates one or more
@@ -507,8 +507,8 @@ spec:
                                   A label query over a set of resources,
                                   in this case pods.
                                 properties:
-                                  ? matchExpressions
-                                  : description:
+                                  matchExpressions:
+                                    description:
                                       matchExpressions is a list of label
                                       selector requirements. The requirements are
                                       ANDed.
@@ -519,19 +519,19 @@ spec:
                                         an operator that relates the key and values.
                                       properties:
                                         key:
-                                          ? description
-                                          : key is the label key that the
+                                          description:
+                                            key is the label key that the
                                             selector applies to.
                                           type: string
                                         operator:
-                                          ? description
-                                          : operator represents a key's
+                                          description:
+                                            operator represents a key's
                                             relationship to a set of values. Valid
                                             operators are In, NotIn, Exists and DoesNotExist.
                                           type: string
                                         values:
-                                          ? description
-                                          : values is an array of string
+                                          description:
+                                            values is an array of string
                                             values. If the operator is In or NotIn,
                                             the values array must be non-empty. If
                                             the operator is Exists or DoesNotExist,
@@ -546,8 +546,8 @@ spec:
                                       type: object
                                     type: array
                                   matchLabels:
-                                    ? additionalProperties
-                                    : type: string
+                                    additionalProperties:
+                                      type: string
                                     description:
                                       matchLabels is a map of {key,value}
                                       pairs. A single {key,value} in the matchLabels
@@ -589,8 +589,8 @@ spec:
                           - weight
                         type: object
                       type: array
-                    ? requiredDuringSchedulingIgnoredDuringExecution
-                    : description:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      description:
                         If the anti-affinity requirements specified by
                         this field are not met at scheduling time, the pod will not
                         be scheduled onto the node. If the anti-affinity requirements
@@ -653,8 +653,8 @@ spec:
                                   type: object
                                 type: array
                               matchLabels:
-                                ? additionalProperties
-                                : type: string
+                                additionalProperties:
+                                  type: string
                                 description:
                                   matchLabels is a map of {key,value} pairs.
                                   A single {key,value} in the matchLabels map is equivalent
@@ -3805,15 +3805,15 @@ spec:
                             the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources'
                           properties:
                             limits:
-                              ? additionalProperties
-                              : type: string
+                              additionalProperties:
+                                type: string
                               description:
                                 'Limits describes the maximum amount of
                                 compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                               type: object
                             requests:
-                              ? additionalProperties
-                              : type: string
+                              additionalProperties:
+                                type: string
                               description:
                                 'Requests describes the minimum amount
                                 of compute resources required. If Requests is omitted
@@ -3865,8 +3865,8 @@ spec:
                                 type: object
                               type: array
                             matchLabels:
-                              ? additionalProperties
-                              : type: string
+                              additionalProperties:
+                                type: string
                               description:
                                 matchLabels is a map of {key,value} pairs.
                                 A single {key,value} in the matchLabels map is equivalent
@@ -4866,8 +4866,8 @@ spec:
                                         description: The key to project.
                                         type: string
                                       mode:
-                                        ? description
-                                        : 'Optional: mode bits to use on
+                                        description:
+                                          'Optional: mode bits to use on
                                           this file, must be a value between 0 and
                                           0777. If not specified, the volume defaultMode
                                           will be used. This might be in conflict
@@ -4877,8 +4877,8 @@ spec:
                                         format: int32
                                         type: integer
                                       path:
-                                        ? description
-                                        : The relative path of the file
+                                        description:
+                                          The relative path of the file
                                           to map the key to. May not be an absolute
                                           path. May not contain the path element '..'.
                                           May not start with the string '..'.
@@ -4916,28 +4916,28 @@ spec:
                                       pod field
                                     properties:
                                       fieldRef:
-                                        ? description
-                                        : 'Required: Selects a field of
+                                        description:
+                                          'Required: Selects a field of
                                           the pod: only annotations, labels, name
                                           and namespace are supported.'
-                                        ? properties
-                                        : ? apiVersion
-                                          : ? description
-                                            : Version of the schema the
+                                        properties:
+                                          apiVersion:
+                                            description:
+                                              Version of the schema the
                                               FieldPath is written in terms of, defaults
                                               to "v1".
                                             type: string
-                                          ? fieldPath
-                                          : ? description
-                                            : Path of the field to select
+                                          fieldPath:
+                                            description:
+                                              Path of the field to select
                                               in the specified API version.
                                             type: string
                                         required:
                                           - fieldPath
                                         type: object
                                       mode:
-                                        ? description
-                                        : 'Optional: mode bits to use on
+                                        description:
+                                          'Optional: mode bits to use on
                                           this file, must be a value between 0 and
                                           0777. If not specified, the volume defaultMode
                                           will be used. This might be in conflict
@@ -4947,33 +4947,33 @@ spec:
                                         format: int32
                                         type: integer
                                       path:
-                                        ? description
-                                        : "Required: Path is  the relative
+                                        description:
+                                          "Required: Path is  the relative
                                           path name of the file to be created. Must
                                           not be absolute or contain the '..' path.
                                           Must be utf-8 encoded. The first item of
                                           the relative path must not start with '..'"
                                         type: string
-                                      ? resourceFieldRef
-                                      : ? description
-                                        : 'Selects a resource of the container:
+                                      resourceFieldRef:
+                                        description:
+                                          'Selects a resource of the container:
                                           only resources limits and requests (limits.cpu,
                                           limits.memory, requests.cpu and requests.memory)
                                           are currently supported.'
-                                        ? properties
-                                        : ? containerName
-                                          : ? description
-                                            : 'Container name: required
+                                        properties:
+                                          containerName:
+                                            description:
+                                              'Container name: required
                                               for volumes, optional for env vars'
                                             type: string
                                           divisor:
-                                            ? description
-                                            : Specifies the output format
+                                            description:
+                                              Specifies the output format
                                               of the exposed resources, defaults to
                                               "1"
                                             type: string
-                                          ? resource
-                                          : description: 'Required: resource to select'
+                                          resource:
+                                            description: 'Required: resource to select'
                                             type: string
                                         required:
                                           - resource
@@ -5008,8 +5008,8 @@ spec:
                                         description: The key to project.
                                         type: string
                                       mode:
-                                        ? description
-                                        : 'Optional: mode bits to use on
+                                        description:
+                                          'Optional: mode bits to use on
                                           this file, must be a value between 0 and
                                           0777. If not specified, the volume defaultMode
                                           will be used. This might be in conflict
@@ -5019,8 +5019,8 @@ spec:
                                         format: int32
                                         type: integer
                                       path:
-                                        ? description
-                                        : The relative path of the file
+                                        description:
+                                          The relative path of the file
                                           to map the key to. May not be an absolute
                                           path. May not contain the path element '..'.
                                           May not start with the string '..'.

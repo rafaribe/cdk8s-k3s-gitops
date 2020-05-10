@@ -52,11 +52,7 @@ export interface FluxOptions {
 }
 
 export class Flux extends Construct {
-  constructor(
-    scope: Construct,
-    constructId: string,
-    options: FluxOptions,
-  ) {
+  constructor(scope: Construct, constructId: string, options: FluxOptions) {
     super(scope, constructId);
     const label = { name: options.name };
 
@@ -75,62 +71,50 @@ export class Flux extends Construct {
       },
     });
 
-    const serviceAccount = new ServiceAccount(
-      this,
-      options.name + 'sa',
-      {
-        metadata: {
-          labels: label,
-          name: options.name,
+    const serviceAccount = new ServiceAccount(this, options.name + 'sa', {
+      metadata: {
+        labels: label,
+        name: options.name,
+        namespace: options.namespace,
+      },
+    });
+
+    const clusterRole = new ClusterRole(this, options.name + '-cr', {
+      metadata: {
+        labels: label,
+        name: options.name,
+      },
+      rules: [
+        {
+          apiGroups: ['*'],
+          resources: ['*'],
+          verbs: ['*'],
+        },
+        {
+          nonResourceURLs: ['*'],
+          verbs: ['*'],
+        },
+      ],
+    });
+
+    new ClusterRoleBinding(this, options.name + '-crb', {
+      metadata: {
+        labels: label,
+        name: options.name,
+      },
+      roleRef: {
+        apiGroup: 'rbac.authorization.k8s.io',
+        kind: clusterRole.kind,
+        name: clusterRole.name,
+      },
+      subjects: [
+        {
+          kind: serviceAccount.kind,
+          name: serviceAccount.name,
           namespace: options.namespace,
         },
-      },
-    );
-
-    const clusterRole = new ClusterRole(
-      this,
-      options.name + '-cr',
-      {
-        metadata: {
-          labels: label,
-          name: options.name,
-        },
-        rules: [
-          {
-            apiGroups: ['*'],
-            resources: ['*'],
-            verbs: ['*'],
-          },
-          {
-            nonResourceURLs: ['*'],
-            verbs: ['*'],
-          },
-        ],
-      },
-    );
-
-    new ClusterRoleBinding(
-      this,
-      options.name + '-crb',
-      {
-        metadata: {
-          labels: label,
-          name: options.name,
-        },
-        roleRef: {
-          apiGroup: 'rbac.authorization.k8s.io',
-          kind: clusterRole.kind,
-          name: clusterRole.name,
-        },
-        subjects: [
-          {
-            kind: serviceAccount.kind,
-            name: serviceAccount.name,
-            namespace: options.namespace,
-          },
-        ],
-      },
-    );
+      ],
+    });
 
     const probe: Probe = {
       httpGet: {
@@ -140,8 +124,7 @@ export class Flux extends Construct {
       initialDelaySeconds: 5,
       timeoutSeconds: 5,
     };
-    const fluxGitDeploy =
-      options.name + '-git-deploy';
+    const fluxGitDeploy = options.name + '-git-deploy';
 
     const volumes: Volume[] = [
       {
@@ -183,18 +166,14 @@ export class Flux extends Construct {
             labels: label,
           },
           spec: {
-            serviceAccountName:
-              serviceAccount.name,
+            serviceAccountName: serviceAccount.name,
             volumes: volumes,
             containers: [
               {
                 name: options.name,
-                image:
-                  'fluxcd/flux:' + options.tag,
+                image: 'fluxcd/flux:' + options.tag,
                 imagePullPolicy: 'IfNotPresent',
-                ports: [
-                  { containerPort: fluxPort },
-                ],
+                ports: [{ containerPort: fluxPort }],
                 resources: {
                   limits: limits,
                 },
@@ -208,8 +187,7 @@ export class Flux extends Construct {
                   },
                   {
                     name: volumes[1].name,
-                    mountPath:
-                      '/etc/fluxd/keygen',
+                    mountPath: '/etc/fluxd/keygen',
                   },
                 ],
                 args: options.arguments,
@@ -225,51 +203,43 @@ export class Flux extends Construct {
       name: memcachedName,
     };
     const memcachedPort: number = 11211;
-    new Deployment(
-      this,
-      options.name + '-memcached',
-      {
-        metadata: {
-          name: memcachedName,
-          namespace: options.namespace,
+    new Deployment(this, options.name + '-memcached', {
+      metadata: {
+        name: memcachedName,
+        namespace: options.namespace,
+      },
+      spec: {
+        replicas: 1,
+        selector: {
+          matchLabels: memcachedLabels,
         },
-        spec: {
-          replicas: 1,
-          selector: {
-            matchLabels: memcachedLabels,
+        template: {
+          metadata: {
+            labels: memcachedLabels,
           },
-          template: {
-            metadata: {
-              labels: memcachedLabels,
-            },
-            spec: {
-              containers: [
-                {
-                  name: memcachedName,
-                  image: 'memcached:1.5.20',
-                  args: [
-                    '-m 512',
-                    '-I 5m',
-                    '-p ' + memcachedPort,
-                  ],
-                  ports: [
-                    {
-                      name: 'clients',
-                      containerPort: memcachedPort,
-                    },
-                  ],
-                  securityContext: {
-                    runAsGroup: memcachedPort,
-                    runAsUser: memcachedPort,
-                    allowPrivilegeEscalation: false,
+          spec: {
+            containers: [
+              {
+                name: memcachedName,
+                image: 'memcached:1.5.20',
+                args: ['-m 512', '-I 5m', '-p ' + memcachedPort],
+                ports: [
+                  {
+                    name: 'clients',
+                    containerPort: memcachedPort,
                   },
+                ],
+                securityContext: {
+                  runAsGroup: memcachedPort,
+                  runAsUser: memcachedPort,
+                  allowPrivilegeEscalation: false,
                 },
-              ],
-            },
+              },
+            ],
           },
         },
       },
-    );
+    });
     new Service(this, memcachedName + '-svc', {
       metadata: {
         name: memcachedName,
@@ -305,35 +275,31 @@ export class Flux extends Construct {
         },
       });
 
-      new ServiceMonitor(
-        this,
-        options.name + '-sm',
-        {
-          metadata: {
-            namespace: options.namespace,
-            name: options.name,
-            labels: {
-              ['prometheus']: 'monitoring',
-            },
-          },
-          spec: {
-            selector: {
-              matchLabels: label,
-            },
-            endpoints: [
-              {
-                honorLabels: true,
-                port: fluxPortName,
-                path: '/metrics',
-                interval: '30s',
-              },
-            ],
-            namespaceSelector: {
-              matchNames: [options.namespace],
-            },
+      new ServiceMonitor(this, options.name + '-sm', {
+        metadata: {
+          namespace: options.namespace,
+          name: options.name,
+          labels: {
+            ['prometheus']: 'monitoring',
           },
         },
-      );
+        spec: {
+          selector: {
+            matchLabels: label,
+          },
+          endpoints: [
+            {
+              honorLabels: true,
+              port: fluxPortName,
+              path: '/metrics',
+              interval: '30s',
+            },
+          ],
+          namespaceSelector: {
+            matchNames: [options.namespace],
+          },
+        },
+      });
     }
   }
 }
