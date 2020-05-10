@@ -1,4 +1,12 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    name: metallb-system
+  name: metal-lb-metallb-system-ns-c07783ff
+  namespace: metallb-system
+---
+apiVersion: v1
 data:
   config: |
     address-pools:
@@ -15,8 +23,8 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   annotations:
-    fluxcd.io/automated: 'false'
-    fluxcd.io/ignore: 'false'
+    fluxcd.io/automated: "false"
+    fluxcd.io/ignore: "false"
   name: metallb
   namespace: metallb-system
 spec:

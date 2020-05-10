@@ -1,7 +1,7 @@
 import { App, Chart } from 'cdk8s';
 import { Construct } from 'constructs';
 import { HelmRelease } from '../imports/helmrelease';
-import { ConfigMap } from '../imports/k8s';
+import { ConfigMap, Namespace } from '../imports/k8s';
 import { readFileSync } from 'fs';
 
 export class MetalLb extends Chart {
@@ -10,6 +10,15 @@ export class MetalLb extends Chart {
 
     const metallb = 'metallb';
     const metallbNamespace = 'metallb-system';
+
+    new Namespace(this, metallbNamespace + '-ns', {
+      metadata: {
+        namespace: metallbNamespace,
+        labels: {
+          ['name']: metallbNamespace,
+        },
+      },
+    });
 
     const configMapName = 'metallb-config';
     new ConfigMap(this, configMapName, {
