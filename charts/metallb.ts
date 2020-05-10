@@ -14,6 +14,7 @@ export class MetalLb extends Chart {
     new Namespace(this, metallbNamespace + '-ns', {
       metadata: {
         namespace: metallbNamespace,
+        name: metallbNamespace,
         labels: {
           ['name']: metallbNamespace,
         },

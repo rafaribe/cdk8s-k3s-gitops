@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   labels:
     name: metallb-system
-  name: metal-lb-metallb-system-ns-c07783ff
+  name: metallb-system
   namespace: metallb-system
 ---
 apiVersion: v1
