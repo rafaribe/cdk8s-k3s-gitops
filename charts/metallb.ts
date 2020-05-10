@@ -45,10 +45,10 @@ export class MetalLb extends Chart {
           controller: {},
           prometheus: {
             serviceMonitor: {
-              enabled: false,
+              enabled: true,
             },
             prometheusRule: {
-              enabled: false,
+              enabled: true,
             },
           },
           existingConfig: configMapName,

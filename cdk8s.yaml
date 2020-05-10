@@ -6,7 +6,6 @@ imports:
   - k8s
   # Flux Helm Operator
   - https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml
-  #
   #Prometheus CRDs - Beta Version
   - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/servicemonitor.yaml
   - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/alertmanagers.yaml

@@ -17,9 +17,13 @@
     "build": "npm run compile && npm run test && npm run synth",
     "upgrade": "npm i cdk8s@latest cdk8s-cli@latest",
     "upgrade:next": "npm i cdk8s@next cdk8s-cli@next",
-    "compile-synth": "./compile-synth.sh",
-    "precommit": "npm test",
-    "prepush": "npm test"
+    "compile-synth": "./scripts/compile-synth.sh",
+    "minikube-test": "./scripts/minikube-test.sh"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./scripts/pre-commit-hook.sh"
+    }
   },
   "dependencies": {
     "cdk8s": "^0.19.0",
