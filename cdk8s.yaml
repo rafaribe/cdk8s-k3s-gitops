@@ -10,3 +10,7 @@ imports:
   #Prometheus CRDs - Beta Version
   - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/servicemonitor.yaml
   - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/alertmanagers.yaml
+  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/prometheuses.yaml
+  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/thanosrulers.yaml
+  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/podmonitor.yaml
+  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/prometheusrules.yaml
