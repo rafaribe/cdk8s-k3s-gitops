@@ -8,9 +8,9 @@ echo '💅🏻 Running Prettier on the code'
 npm run prettier
 echo '-----------------------------'
 echo '👀 Linting the code'
-npm run lint
+#npm run lint
 echo '-----------------------------'
 echo '😎Compile and Synth'
-npm run compile-synth
+#npm run compile-synth
 echo '-----------------------------'
 echo '🏁 Pre-commit hook finished'

@@ -35,11 +35,11 @@ spec:
             - name: TZ
               value: Europe/Lisbon
             - name: PUID
-              value: "1000"
+              value: '1000'
             - name: PGID
-              value: "1000"
+              value: '1000'
             - name: UMASK_SET
-              value: "022"
+              value: '022'
           image: linuxserver/unifi-controller:5.12.66-ls57
           name: unifi
           ports:
@@ -71,7 +71,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/allow-shared-ip: "true"
+    metallb.universe.tf/allow-shared-ip: 'true'
   labels:
     app: unifi
   name: unifi-tcp
@@ -99,7 +99,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/allow-shared-ip: "true"
+    metallb.universe.tf/allow-shared-ip: 'true'
   labels:
     app: unifi
   name: unifi-udp
