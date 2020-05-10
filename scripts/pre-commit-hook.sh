@@ -13,4 +13,7 @@ echo '-----------------------------'
 echo '😎Compile and Synth'
 npm run compile-synth
 echo '-----------------------------'
+echo '😎Adding Staging Changes to this commit'
+git stage .
+echo '-----------------------------'
 echo '🏁 Pre-commit hook finished'

@@ -22,7 +22,6 @@ kubectl apply -f .
 cd ../prometheus/
 kubectl apply -f .
 
-
 echo '⛵️Installing Helm Operator'
 #helm upgrade -i helm-operator fluxcd/helm-operator \
 #    --namespace flux \
