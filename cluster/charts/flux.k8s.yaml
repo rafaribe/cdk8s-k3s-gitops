@@ -21,15 +21,15 @@ metadata:
   name: flux
 rules:
   - apiGroups:
-      - '*'
+      - "*"
     resources:
-      - '*'
+      - "*"
     verbs:
-      - '*'
+      - "*"
   - nonResourceURLs:
-      - '*'
+      - "*"
     verbs:
-      - '*'
+      - "*"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -38,13 +38,20 @@ metadata:
     name: flux
   name: flux
 roleRef:
-  apiGroup: rbac.authorization.k8s.io/v1
+  apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: flux
 subjects:
   - kind: ServiceAccount
     name: flux
     namespace: flux
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-git-deploy
+  namespace: flux
+type: Opaque
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -66,7 +73,7 @@ spec:
       containers:
         - args:
             - --memcached-service=
-            - --ssh-keygen-dir=/var/fluxd/keygen
+            - --ssh-keygen-dir=/etc/fluxd/keygen
             - --git-url=git@github.com:rafaribe/cdk8s-k3s-gitops.git
             - --git-branch=master
             - --git-path=cluster
@@ -75,7 +82,7 @@ spec:
             - --git-email=flux@rafaribe.com
             - --git-poll-interval=5m
             - --sync-garbage-collection
-          image: docker.io/fluxcd/flux:1.19.0
+          image: fluxcd/flux:1.19.0
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -99,6 +106,7 @@ spec:
           volumeMounts:
             - mountPath: /etc/fluxd/ssh
               name: git-key
+              readOnly: true
             - mountPath: /etc/fluxd/keygen
               name: git-keygen
       serviceAccountName: flux
@@ -131,7 +139,7 @@ spec:
             - -m 512
             - -I 5m
             - -p 11211
-          image: memcached:1.6.5
+          image: memcached:1.5.20
           name: memcached
           ports:
             - containerPort: 11211

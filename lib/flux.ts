@@ -6,6 +6,7 @@ import {
   Namespace,
   Probe,
   Quantity,
+  Secret,
   Service,
   ServiceAccount,
   Volume,
@@ -117,7 +118,7 @@ export class Flux extends Construct {
           name: options.name,
         },
         roleRef: {
-          apiGroup: clusterRole.apiVersion,
+          apiGroup: 'rbac.authorization.k8s.io',
           kind: clusterRole.kind,
           name: clusterRole.name,
         },
@@ -139,13 +140,14 @@ export class Flux extends Construct {
       initialDelaySeconds: 5,
       timeoutSeconds: 5,
     };
+    const fluxGitDeploy =
+      options.name + '-git-deploy';
 
     const volumes: Volume[] = [
       {
         name: 'git-key',
         secret: {
-          secretName:
-            options.name + '-git-deploy',
+          secretName: fluxGitDeploy,
           defaultMode: 400,
         },
       },
@@ -154,6 +156,14 @@ export class Flux extends Construct {
         emptyDir: { medium: 'Memory' },
       },
     ];
+
+    new Secret(this, options.name + '-secret', {
+      metadata: {
+        name: fluxGitDeploy,
+        namespace: options.namespace,
+      },
+      type: 'Opaque',
+    });
 
     new Deployment(this, options.name + '-dp', {
       metadata: {
@@ -180,8 +190,7 @@ export class Flux extends Construct {
               {
                 name: options.name,
                 image:
-                  'docker.io/fluxcd/flux:' +
-                  options.tag,
+                  'fluxcd/flux:' + options.tag,
                 imagePullPolicy: 'IfNotPresent',
                 ports: [
                   { containerPort: fluxPort },
@@ -195,6 +204,7 @@ export class Flux extends Construct {
                   {
                     name: volumes[0].name,
                     mountPath: '/etc/fluxd/ssh',
+                    readOnly: true,
                   },
                   {
                     name: volumes[1].name,
@@ -236,7 +246,7 @@ export class Flux extends Construct {
               containers: [
                 {
                   name: memcachedName,
-                  image: 'memcached:1.6.5',
+                  image: 'memcached:1.5.20',
                   args: [
                     '-m 512',
                     '-I 5m',
