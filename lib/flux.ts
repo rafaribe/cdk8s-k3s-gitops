@@ -15,6 +15,10 @@ import { ServiceMonitor } from '../imports/servicemonitor';
 
 export interface FluxOptions {
   /**
+   * The image for flux (docker hub only)
+   */
+  readonly image: string;
+  /**
    * The tag for the flux image
    */
   readonly tag: string;
@@ -39,7 +43,6 @@ export interface FluxOptions {
   /**
    * Flux Arguments
    *
-   * @defaul
    */
   readonly arguments: string[];
 
@@ -131,7 +134,7 @@ export class Flux extends Construct {
         name: 'git-key',
         secret: {
           secretName: fluxGitDeploy,
-          defaultMode: 400,
+          defaultMode: 0o400,
         },
       },
       {
@@ -171,7 +174,7 @@ export class Flux extends Construct {
             containers: [
               {
                 name: options.name,
-                image: 'fluxcd/flux:' + options.tag,
+                image: options.image + ':' + options.tag,
                 imagePullPolicy: 'IfNotPresent',
                 ports: [{ containerPort: fluxPort }],
                 resources: {

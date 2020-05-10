@@ -4,4 +4,4 @@ tabWidth: 2
 semi: true
 singleQuote: true
 useTabs: false
-printWidth: 80
+printWidth: 120

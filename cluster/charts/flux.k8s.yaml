@@ -82,7 +82,7 @@ spec:
             - --git-email=flux@rafaribe.com
             - --git-poll-interval=5m
             - --sync-garbage-collection
-          image: fluxcd/flux:1.19.0
+          image: raspbernetes/flux:1.19.0
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -113,7 +113,7 @@ spec:
       volumes:
         - name: git-key
           secret:
-            defaultMode: 400
+            defaultMode: 256
             secretName: flux-git-deploy
         - emptyDir:
             medium: Memory
@@ -158,38 +158,3 @@ spec:
   ports:
     - name: memcached
       port: 11211
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    name: flux
-  name: flux
-  namespace: flux
-spec:
-  ports:
-    - name: http
-      port: 3030
-      protocol: TCP
-      targetPort: http
-  type: ClusterIP
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  labels:
-    prometheus: monitoring
-  name: flux
-  namespace: flux
-spec:
-  endpoints:
-    - honorLabels: true
-      interval: 30s
-      path: /metrics
-      port: http
-  namespaceSelector:
-    matchNames:
-      - flux
-  selector:
-    matchLabels:
-      name: flux

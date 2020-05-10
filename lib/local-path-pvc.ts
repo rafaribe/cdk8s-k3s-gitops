@@ -10,9 +10,8 @@ export interface LocalPathPvcOptions {
   readonly size: string;
 
   /**
-   * Persistent Volume Claim Size
+   * Namespace
    *
-   * @default 2Gi
    */
   readonly namespace: string;
 
@@ -24,18 +23,11 @@ export interface LocalPathPvcOptions {
   readonly name: string;
 
   /**
-   * Persistent Volume Claim Name
+   * Access Modes, can be ReadWriteOnce, ReadWriteMany, ReadOnlyMany
    *
-   * @default 2Gi
+   * @default ReadWriteMany
    */
   readonly accessModes: string[];
-
-  /**
-   * Persistent Volume Claim Name
-   *
-   * @default 2Gi
-   */
-  readonly matchLabels: { [key: string]: string };
 }
 
 const constructId = 'local-path-pvc-' + Math.random().toString(36).slice(2);
@@ -58,9 +50,6 @@ export class LocalPathPVC extends Construct {
           requests: {
             storage: Quantity.fromString(options.size),
           },
-        },
-        selector: {
-          matchLabels: options.matchLabels,
         },
       },
     });

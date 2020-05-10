@@ -11,13 +11,15 @@ else
    echo '🚢Starting Minikube'
   minikube start
 fi
-
+kubectx minikube
 echo '🏟️ Applying CRD'
 cd ./cluster/crd/
 
 cd ./helm-operator/
 
 kubectl apply -f .
+
+sleep 5
 
 cd ../prometheus/
 kubectl apply -f .
@@ -32,7 +34,7 @@ cd ../../charts
 
 kubectl apply -f .
 
-sleep 15;
+sleep 5;
 
 echo '🚀️️ Fetching Git Secret from Flux'
 kubectl get secret flux-git-deploy --namespace=flux -o yaml | yq r - data.identity

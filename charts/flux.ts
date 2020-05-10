@@ -9,8 +9,9 @@ export class FluxDaemon extends Chart {
     new Flux(this, 'flux', {
       namespace: 'flux',
       name: 'flux',
+      image: 'raspbernetes/flux',
       tag: '1.19.0',
-      prometheusOperator: true,
+      prometheusOperator: false,
       replicas: 1,
       arguments: [
         '--memcached-service=',

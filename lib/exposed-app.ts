@@ -1,10 +1,35 @@
 import { Construct } from 'constructs';
 import { Deployment, Namespace, Quantity, Service } from '../imports/k8s';
 import { LocalPathPVC } from './local-path-pvc';
-
-export interface UnifiOptions {
+import { ensureTargetPortsAreFilled } from './utils';
+export interface PortOptions {
   /**
-   * Persistent Volume Claim Size
+   * Por number
+   *
+   */
+  readonly port: number;
+
+  /**
+   * Port name (usable in service)
+   *
+   */
+  readonly name: string;
+  /**
+   * Used same as port in case of null value
+   *
+   */
+  targetPort?: number;
+  /**
+   * Can be TCP, UDP or Both
+   *
+   * @default TCP
+   */
+  readonly protocol: string;
+}
+
+export interface ExposedAppOptions {
+  /**
+   * Timezone
    *
    * @default Europe/Lisbon
    */
@@ -13,7 +38,7 @@ export interface UnifiOptions {
   /**
    * Namespace
    *
-   * @default unifi
+   * @default apps
    */
   readonly namespace: string;
 
@@ -25,9 +50,9 @@ export interface UnifiOptions {
   readonly name: string;
 
   /**
-   * Persistent Volume Claim Name
+   * Image Tag
    *
-   * @default 2Gi
+   * @default latest
    */
   readonly imageTag: string;
 
@@ -37,24 +62,38 @@ export interface UnifiOptions {
    * @default 192.168.1.250
    */
   readonly ipAddress: string;
+  /**
+   * Ports to expose via service
+   *
+   */
+  readonly ports: PortOptions[];
+
+  /**
+   * PVC Size
+   *
+   */
+  readonly pvcSize: string;
 }
 
 const constructId = 'unifi-' + Math.random().toString(36).slice(2);
 
-export class Unifi extends Construct {
-  constructor(scope: Construct, options: UnifiOptions) {
+export class ExposedApp extends Construct {
+  constructor(scope: Construct, options: ExposedAppOptions) {
     super(scope, constructId);
+
+    ensureTargetPortsAreFilled(options.ports);
 
     const accessModes: string[] = ['ReadWriteOnce'];
 
     const deploymentLabels = {
-      ['app']: 'unifi',
+      ['app']: options.name,
     };
 
     const metadata = {
       namespace: options.namespace,
       name: options.name,
     };
+
     new Namespace(this, options.namespace + '-ns', {
       metadata: { name: options.namespace },
     });
@@ -63,7 +102,7 @@ export class Unifi extends Construct {
       accessModes: accessModes,
       name: options.name,
       namespace: options.namespace,
-      size: '4Gi',
+      size: options.pvcSize,
     });
 
     new Deployment(this, options.name + '-dp', {
@@ -77,7 +116,7 @@ export class Unifi extends Construct {
           spec: {
             volumes: [
               {
-                name: 'config',
+                name: options.name + '-config',
                 persistentVolumeClaim: {
                   claimName: options.name,
                 },

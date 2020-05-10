@@ -13,9 +13,7 @@ export class LocalPathConfig extends Chart {
         namespace: 'kube-system',
       },
       data: {
-        'config.json': fs
-          .readFileSync('./config/local-path-config.json')
-          .toString(),
+        'config.json': fs.readFileSync('./config/local-path-config.json').toString(),
       },
     });
   }
