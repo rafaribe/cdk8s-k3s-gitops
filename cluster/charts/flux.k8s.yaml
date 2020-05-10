@@ -101,8 +101,8 @@ spec:
             timeoutSeconds: 5
           resources:
             limits:
-              cpu: 50m
-              memory: 64Mi
+              cpu: 150m
+              memory: 256Mi
           volumeMounts:
             - mountPath: /etc/fluxd/ssh
               name: git-key
@@ -158,3 +158,5 @@ spec:
   ports:
     - name: memcached
       port: 11211
+  selector:
+    name: memcached
