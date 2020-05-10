@@ -1,3 +1,4 @@
 cluster
 imports
 node_modules
+/scripts/flux-git-deploy.yaml

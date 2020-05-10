@@ -2,3 +2,4 @@ imports
 node_modules
 dist
 **.d.ts
+/scripts/flux-git-deploy.yaml

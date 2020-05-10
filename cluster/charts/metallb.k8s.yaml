@@ -9,7 +9,7 @@ data:
 kind: ConfigMap
 metadata:
   name: metallb-config
-  namespace: kube-system
+  namespace: metallb-system
 ---
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
@@ -18,7 +18,7 @@ metadata:
     fluxcd.io/automated: 'false'
     fluxcd.io/ignore: 'false'
   name: metallb
-  namespace: kube-system
+  namespace: metallb-system
 spec:
   chart:
     name: metallb

@@ -9,7 +9,7 @@ export class MetalLb extends Chart {
     super(scope, name);
 
     const metallb = 'metallb';
-    const metallbNamespace = 'kube-system';
+    const metallbNamespace = 'metallb-system';
 
     const configMapName = 'metallb-config';
     new ConfigMap(this, configMapName, {
