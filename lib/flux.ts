@@ -255,6 +255,9 @@ export class Flux extends Construct {
             name: memcachedName,
           },
         ],
+        selector: {
+          ['name']: memcachedName,
+        },
       },
     });
 
