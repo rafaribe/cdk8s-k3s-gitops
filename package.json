@@ -18,11 +18,12 @@
     "upgrade": "npm i cdk8s@latest cdk8s-cli@latest",
     "upgrade:next": "npm i cdk8s@next cdk8s-cli@next",
     "compile-synth": "./scripts/compile-synth.sh",
-    "minikube-test": "./scripts/minikube-test.sh"
+    "minikube-test": "./scripts/minikube-test.sh",
+    "precommit": "./scripts/pre-commit-hook.sh"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./scripts/pre-commit-hook.sh"
+      "pre-commit": "./scripts/pre-commit-hook.sh && git stage ."
     }
   },
   "dependencies": {
