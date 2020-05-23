@@ -1,4 +1,4 @@
-import { PortOptions } from './exposed-app';
+import { PortOptions } from "./exposed-app";
 
 export function ensureTargetPortsAreFilled(ports: PortOptions[]) {
   ports.forEach(function (value) {

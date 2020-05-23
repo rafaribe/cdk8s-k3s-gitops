@@ -1,6 +1,6 @@
-import { Construct } from 'constructs';
-import { Deployment, Namespace, Quantity, Service } from '../imports/k8s';
-import { LocalPathPVC } from './local-path-pvc';
+import { Construct } from "constructs";
+import { Deployment, Namespace, Quantity, Service } from "../imports/k8s";
+import { LocalPathPVC } from "./local-path-pvc";
 
 export interface UnifiOptions {
   /**
@@ -39,23 +39,23 @@ export interface UnifiOptions {
   readonly ipAddress: string;
 }
 
-const constructId = 'unifi-' + Math.random().toString(36).slice(2);
+const constructId = "unifi-" + Math.random().toString(36).slice(2);
 
 export class Unifi extends Construct {
   constructor(scope: Construct, options: UnifiOptions) {
     super(scope, constructId);
 
-    const accessModes: string[] = ['ReadWriteOnce'];
+    const accessModes: string[] = ["ReadWriteOnce"];
 
     const deploymentLabels = {
-      ['app']: 'unifi',
+      ["app"]: "unifi",
     };
 
     const metadata = {
       namespace: options.namespace,
       name: options.name,
     };
-    new Namespace(this, options.namespace + '-ns', {
+    new Namespace(this, options.namespace + "-ns", {
       metadata: { name: options.namespace },
     });
 
@@ -63,10 +63,10 @@ export class Unifi extends Construct {
       accessModes: accessModes,
       name: options.name,
       namespace: options.namespace,
-      size: '4Gi',
+      size: "4Gi",
     });
 
-    new Deployment(this, options.name + '-dp', {
+    new Deployment(this, options.name + "-dp", {
       metadata: metadata,
       spec: {
         selector: {
@@ -77,7 +77,7 @@ export class Unifi extends Construct {
           spec: {
             volumes: [
               {
-                name: 'config',
+                name: "config",
                 persistentVolumeClaim: {
                   claimName: options.name,
                 },
@@ -86,53 +86,53 @@ export class Unifi extends Construct {
             containers: [
               {
                 name: options.name,
-                image: 'linuxserver/unifi-controller:' + options.imageTag,
+                image: "linuxserver/unifi-controller:" + options.imageTag,
                 resources: {
                   limits: {
-                    memory: Quantity.fromString('512Mi'),
-                    cpu: Quantity.fromString('500m'),
+                    memory: Quantity.fromString("512Mi"),
+                    cpu: Quantity.fromString("500m"),
                   },
                 },
                 env: [
                   {
-                    name: 'TZ',
+                    name: "TZ",
                     value: options.timezone,
                   },
-                  { name: 'PUID', value: '1000' },
-                  { name: 'PGID', value: '1000' },
+                  { name: "PUID", value: "1000" },
+                  { name: "PGID", value: "1000" },
                   {
-                    name: 'UMASK_SET',
-                    value: '022',
+                    name: "UMASK_SET",
+                    value: "022",
                   },
                 ],
                 volumeMounts: [
                   {
-                    name: 'config',
-                    mountPath: '/config',
+                    name: "config",
+                    mountPath: "/config",
                   },
                 ],
                 ports: [
                   {
-                    name: 'https',
+                    name: "https",
                     containerPort: 8433,
                   },
                   {
-                    name: 'http',
+                    name: "http",
                     containerPort: 8080,
                   },
                   {
-                    name: 'stun',
+                    name: "stun",
                     containerPort: 3478,
-                    protocol: 'UDP',
+                    protocol: "UDP",
                   },
                   {
-                    name: 'speedtest',
+                    name: "speedtest",
                     containerPort: 6789,
                   },
                   {
-                    name: 'ubnt-discovery',
+                    name: "ubnt-discovery",
                     containerPort: 10001,
-                    protocol: 'UDP',
+                    protocol: "UDP",
                   },
                 ],
               },
@@ -142,10 +142,10 @@ export class Unifi extends Construct {
       },
     });
 
-    const tcpService = options.name + '-tcp';
+    const tcpService = options.name + "-tcp";
 
     const metalLbAnnotations = {
-      ['metallb.universe.tf/allow-shared-ip']: 'true',
+      ["metallb.universe.tf/allow-shared-ip"]: "true",
     };
     new Service(this, tcpService, {
       metadata: {
@@ -155,33 +155,33 @@ export class Unifi extends Construct {
         annotations: metalLbAnnotations,
       },
       spec: {
-        type: 'LoadBalancer',
+        type: "LoadBalancer",
         loadBalancerIP: options.ipAddress,
         ports: [
-          { port: 8080, name: 'uap-inform' },
+          { port: 8080, name: "uap-inform" },
           {
             port: 8443,
-            name: 'controller-gui-api',
+            name: "controller-gui-api",
           },
-          { port: 8880, name: 'http-redirect' },
-          { port: 8843, name: 'https-redirect' },
+          { port: 8880, name: "http-redirect" },
+          { port: 8843, name: "https-redirect" },
           {
             port: 6789,
-            name: 'throughput-measurement',
+            name: "throughput-measurement",
           },
           {
             port: 8881,
-            name: 'wireless-client-redirector-port1',
+            name: "wireless-client-redirector-port1",
           },
           {
             port: 8882,
-            name: 'wireless-client-redirector-port2',
+            name: "wireless-client-redirector-port2",
           },
         ],
       },
     });
 
-    const udpService = options.name + '-udp';
+    const udpService = options.name + "-udp";
 
     new Service(this, udpService, {
       metadata: {
@@ -191,11 +191,11 @@ export class Unifi extends Construct {
         annotations: metalLbAnnotations,
       },
       spec: {
-        type: 'LoadBalancer',
+        type: "LoadBalancer",
         loadBalancerIP: options.ipAddress,
         ports: [
-          { port: 3478, name: 'stun-port', protocol: 'UDP' },
-          { port: 10001, name: 'ap-discovery', protocol: 'UDP' },
+          { port: 3478, name: "stun-port", protocol: "UDP" },
+          { port: 10001, name: "ap-discovery", protocol: "UDP" },
         ],
       },
     });
