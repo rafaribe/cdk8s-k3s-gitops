@@ -13,11 +13,6 @@ echo '---------------------------'
 kubectl create namespace flux
 # Specific Secret key that I have placed under ignore to not have public exposure, you should create your own or use fluxctl identity.
 
-echo '---------------------------'
-echo '🔑Applying Fluxs git key'
-echo '---------------------------'
-kubectl apply -f flux-git-deploy.yaml
-
 cd ../cluster/charts
 echo '---------------------------'
 echo '🔭Installing Flux'
@@ -38,10 +33,10 @@ helm upgrade -i helm-operator fluxcd/helm-operator \
 export FLUX_FORWARD_NAMESPACE=flux
 # Wait for flux to boot up
 echo '---------------------------'
-echo '⏱Waiting 60 secs for flux to boot up'
+echo '⏱ Waiting 25 secs for flux to boot up'
 echo '---------------------------'
-sleep 60
+sleep 25
 echo '---------------------------'
 echo '✌️Flux sync with the git repository'
 echo '---------------------------'
-fluxctl sync
+fluxctl identity
