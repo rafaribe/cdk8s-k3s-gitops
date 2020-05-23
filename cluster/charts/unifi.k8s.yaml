@@ -93,6 +93,8 @@ spec:
       port: 8881
     - name: wireless-client-redirector-port2
       port: 8882
+  selector:
+    app: unifi
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -113,4 +115,6 @@ spec:
     - name: ap-discovery
       port: 10001
       protocol: UDP
+  selector:
+    app: unifi
   type: LoadBalancer
