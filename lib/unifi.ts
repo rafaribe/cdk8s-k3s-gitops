@@ -155,6 +155,7 @@ export class Unifi extends Construct {
         annotations: metalLbAnnotations,
       },
       spec: {
+        selector: deploymentLabels,
         type: "LoadBalancer",
         loadBalancerIP: options.ipAddress,
         ports: [

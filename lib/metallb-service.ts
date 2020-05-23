@@ -57,6 +57,7 @@ export class MetalLbService extends Construct {
         annotations: metalLbAnnotations,
       },
       spec: {
+        selector: options.labels,
         type: "LoadBalancer",
         loadBalancerIP: options.ipAddress,
         ports: tcpPorts,
@@ -73,6 +74,7 @@ export class MetalLbService extends Construct {
         annotations: metalLbAnnotations,
       },
       spec: {
+        selector: options.labels,
         type: "LoadBalancer",
         loadBalancerIP: options.ipAddress,
         ports: udpPorts,
