@@ -24,7 +24,7 @@ rules:
   no-return-assign: warn
   prettier/prettier:
     - error
-    - singleQuote: true
+    - singleQuote: false
   no-console: 0
   "@typescript-eslint/explicit-member-accessibility": 0
   "@typescript-eslint/explicit-function-return-type": 0
