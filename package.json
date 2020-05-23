@@ -10,8 +10,6 @@
     "lint": "eslint .",
     "prettier": "prettier --write .",
     "import": "cdk8s import",
-    "synth": "cdk8s synth",
-    "compile": "tsc",
     "watch": "tsc -w",
     "test": "jest",
     "build": "npm run compile && npm run test && npm run synth",
@@ -23,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./scripts/pre-commit-hook.sh && git stage ."
+      "pre-commit": "./scripts/pre-commit-hook.sh"
     }
   },
   "dependencies": {
