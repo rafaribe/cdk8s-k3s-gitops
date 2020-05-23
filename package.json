@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "cdk8s": "^0.21.0",
+    "cdk8s-flux": "^0.1.2",
     "constructs": "^2.0.1",
     "dotenv": "^8.2.0",
     "eslint-config-with-prettier": "^6.0.0"

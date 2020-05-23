@@ -139,7 +139,7 @@ spec:
             - -m 512
             - -I 5m
             - -p 11211
-          image: memcached:1.5.20
+          image: memcached:undefined
           name: memcached
           ports:
             - containerPort: 11211

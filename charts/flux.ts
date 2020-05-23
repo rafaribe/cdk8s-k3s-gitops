@@ -1,17 +1,16 @@
 import { App, Chart } from 'cdk8s';
 import { Construct } from 'constructs';
-import { Flux } from '../lib/flux';
+import { Flux } from 'cdk8s-flux';
 
 export class FluxDaemon extends Chart {
   constructor(scope: Construct, name: string) {
     super(scope, name);
 
     new Flux(this, 'flux', {
-      namespace: 'flux',
+      ns: 'flux',
       name: 'flux',
       image: 'raspbernetes/flux',
       tag: '1.19.0',
-      prometheusOperator: false,
       replicas: 1,
       arguments: [
         '--memcached-service=',
