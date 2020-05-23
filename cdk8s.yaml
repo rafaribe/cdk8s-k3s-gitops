@@ -7,9 +7,9 @@ imports:
   # Flux Helm Operator
   - https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml
   #Prometheus CRDs - Beta Version
-  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/servicemonitor.yaml
-  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/alertmanagers.yaml
-  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/prometheuses.yaml
-  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/thanosrulers.yaml
-  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/podmonitor.yaml
-  - https://raw.githubusercontent.com/rafaribe/cdk8s-k3s-gitops/master/cluster/crd/prometheus/prometheusrules.yaml
+  - https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
+  - https://github.com/coreos/prometheus-operator/blob/master/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+  - https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+  - https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+  - https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+  - https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml

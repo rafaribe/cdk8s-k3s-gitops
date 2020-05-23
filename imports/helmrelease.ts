@@ -344,6 +344,11 @@ export interface HelmReleaseSpecChartSecretRef {
    */
   readonly name: string;
 
+  /**
+   * @schema HelmReleaseSpecChartSecretRef#namespace
+   */
+  readonly namespace?: string;
+
 }
 
 /**
