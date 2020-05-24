@@ -191,14 +191,14 @@ spec:
             - mountPath: /config
               name: jackett-config
             - mountPath: /downloads
-              name: downloads-pvc
+              name: downloads
       volumes:
         - name: jackett-config
           persistentVolumeClaim:
             claimName: jackett-config-pvc
-        - name: downloads-pvc
+        - name: downloads
           persistentVolumeClaim:
-            claimName: downloads-pvc-pvc
+            claimName: downloads-pvc
 ---
 apiVersion: v1
 kind: Service

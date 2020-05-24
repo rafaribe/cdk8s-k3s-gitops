@@ -112,7 +112,7 @@ export class MediaCenter extends Chart {
           reuse: false,
         },
         {
-          name: downloadsPVCName,
+          name: "downloads",
           path: "/downloads",
           size: "200Gi",
           reuse: true,
