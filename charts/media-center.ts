@@ -41,7 +41,7 @@ export class MediaCenter extends Chart {
         },
         accessModes: ["ReadWriteMany"],
         local: {
-          path: "/mnt/nas/qb-downloads",
+          path: "/mnt/data/qb-downloads",
         },
         nodeAffinity: {
           required: {

@@ -24,7 +24,7 @@ spec:
   capacity:
     storage: 3Ti
   local:
-    path: /mnt/nas/qb-downloads
+    path: /mnt/data/qb-downloads
   nodeAffinity:
     required:
       nodeSelectorTerms:
