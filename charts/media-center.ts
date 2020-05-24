@@ -1,6 +1,6 @@
 import { App, Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { Namespace } from "../imports/k8s";
+import { Namespace, PersistentVolume, PersistentVolumeClaim, StorageClass } from "../imports/k8s";
 import { LinuxServerApp } from "../lib/linux-server-app";
 //import { LinuxServerApp } from "../lib/linux-server-app";
 
@@ -15,6 +15,61 @@ export class MediaCenter extends Chart {
           ["name"]: namespace,
         },
         name: namespace,
+      },
+    });
+
+    const pvDownloadsLabels = { ["directory"]: "downloads" };
+    const scEscritorioName = "sc-escritorio";
+    const downloadsPVCName = "downloads-pvc";
+    new StorageClass(this, scEscritorioName, {
+      metadata: {
+        name: scEscritorioName,
+      },
+      volumeBindingMode: "WaitForFirstConsumerstor",
+      provisioner: "kubernetes.io/no-provisioner",
+    });
+
+    new PersistentVolume(this, "qbittorrent-downloads-pv", {
+      metadata: {
+        name: "downloads",
+        labels: pvDownloadsLabels,
+      },
+      spec: {
+        storageClassName: scEscritorioName,
+        capacity: {
+          storage: "3Ti",
+        },
+        accessModes: ["ReadWriteMany"],
+        local: {
+          path: "/mnt/nas/qb-downloads",
+        },
+        nodeAffinity: {
+          required: {
+            nodeSelectorTerms: [
+              {
+                matchExpressions: [
+                  {
+                    key: "kubernetes.io/hostname",
+                    operator: "In",
+                    values: ["escritorio"],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    new PersistentVolumeClaim(this, "qbitorrent-downloads-pvc", {
+      metadata: {
+        name: downloadsPVCName,
+        namespace: namespace,
+      },
+      spec: {
+        selector: { matchLabels: pvDownloadsLabels },
+        storageClassName: scEscritorioName,
+        accessModes: ["ReadWriteMany"],
       },
     });
 
@@ -52,7 +107,7 @@ export class MediaCenter extends Chart {
           reuse: false,
         },
         {
-          name: "downloads",
+          name: downloadsPVCName,
           path: "/downloads",
           size: "200Gi",
           reuse: true,

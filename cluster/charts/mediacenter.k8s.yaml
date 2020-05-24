@@ -5,6 +5,49 @@ metadata:
     name: media-center
   name: media-center
 ---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-escritorio
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumerstor
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    directory: downloads
+  name: downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 3Ti
+  local:
+    path: /mnt/nas/qb-downloads
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - escritorio
+  storageClassName: sc-escritorio
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-pvc
+  namespace: media-center
+spec:
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      directory: downloads
+  storageClassName: sc-escritorio
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -158,14 +201,14 @@ spec:
             - mountPath: /config
               name: jackett-config
             - mountPath: /downloads
-              name: downloads
+              name: downloads-pvc
       volumes:
         - name: jackett-config
           persistentVolumeClaim:
             claimName: jackett-config-pvc
-        - name: downloads
+        - name: downloads-pvc
           persistentVolumeClaim:
-            claimName: downloads-pvc
+            claimName: downloads-pvc-pvc
 ---
 apiVersion: v1
 kind: Service
