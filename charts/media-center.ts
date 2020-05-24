@@ -97,7 +97,7 @@ export class MediaCenter extends Chart {
       ],
       ports: [
         { port: 6881, targetPort: 6881 },
-        { port: 8080, targetPort: 80 },
+        { port: 80, targetPort: 8080 },
       ],
       ipAddress: "192.168.1.232",
       image: "linuxserver/qbittorrent:14.2.0.99201912180418-6819-118af03ubuntu18.04.1-ls62",
@@ -121,7 +121,7 @@ export class MediaCenter extends Chart {
           reuse: true,
         },
       ],
-      ports: [{ port: 9117, targetPort: 80 }],
+      ports: [{ port: 80, targetPort: 9117 }],
       ipAddress: "192.168.1.231",
       image: "linuxserver/jackett:v0.14.49-ls56",
       timezone: timezone,
