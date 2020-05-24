@@ -30,10 +30,8 @@ export interface LocalPathPvcOptions {
   readonly accessModes: string[];
 }
 
-const constructId = "local-path-pvc-" + Math.random().toString(36).slice(2);
-
 export class LocalPathPVC extends Construct {
-  constructor(scope: Construct, options: LocalPathPvcOptions) {
+  constructor(scope: Construct, constructId: string, options: LocalPathPvcOptions) {
     super(scope, constructId);
 
     const accessModes: string[] = options.accessModes || ["ReadWriteMany"];

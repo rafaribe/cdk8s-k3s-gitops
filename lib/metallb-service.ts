@@ -12,7 +12,7 @@ export interface MetalLbServiceOptions {
    * Service-Names
    *
    */
-  readonly name: number[];
+  readonly name: string;
 
   /**
    * Namespace for the service
@@ -37,7 +37,7 @@ export enum PortProtocol {
   "UDP",
 }
 
-const constructId = "metal-lb-svc-" + Math.random().toString(36).slice(2);
+const constructId = "metal-lb.ts-svc-" + Math.random().toString(36).slice(2);
 
 export class MetalLbService extends Construct {
   constructor(scope: Construct, options: MetalLbServiceOptions) {

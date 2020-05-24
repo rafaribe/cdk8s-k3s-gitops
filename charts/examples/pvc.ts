@@ -6,9 +6,9 @@ export class PVC extends Chart {
   constructor(scope: Construct, name: string) {
     super(scope, name);
     const accessModes: string[] = ["ReadWriteMany"];
-    new LocalPathPVC(this, {
+    new LocalPathPVC(this, name + "-pvc", {
       accessModes: accessModes,
-      name: "t",
+      name: "test",
       namespace: "local-path-test",
       size: "10Gi",
     });

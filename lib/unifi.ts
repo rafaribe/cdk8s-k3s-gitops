@@ -59,7 +59,7 @@ export class Unifi extends Construct {
       metadata: { name: options.namespace },
     });
 
-    new LocalPathPVC(this, {
+    new LocalPathPVC(this, options.name + "-pvc", {
       accessModes: accessModes,
       name: options.name,
       namespace: options.namespace,
