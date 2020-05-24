@@ -25,16 +25,16 @@ export interface LocalPathPvcOptions {
   /**
    * Access Modes, can be ReadWriteOnce, ReadWriteMany, ReadOnlyMany
    *
-   * @default ReadWriteMany
+   * @default ReadWriteOnce
    */
-  readonly accessModes: string[];
+  readonly accessModes?: string[];
 }
 
 export class LocalPathPVC extends Construct {
   constructor(scope: Construct, constructId: string, options: LocalPathPvcOptions) {
     super(scope, constructId);
 
-    const accessModes: string[] = options.accessModes || ["ReadWriteMany"];
+    const accessModes: string[] = options.accessModes || ["ReadWriteOnce"];
 
     new PersistentVolumeClaim(this, options.name, {
       metadata: {

@@ -109,7 +109,7 @@ function buildPVC(scope: Construct, volumeOptions: LinuxServerVolumeOptions[], n
         namespace: namespace,
         name: volume.name + "-pvc",
         size: volume.size,
-        accessModes: ["ReadWriteMany"],
+        accessModes: ["Rr"],
       });
     }
     console.log("Reusing Existing PVC instead of creating a new one");
