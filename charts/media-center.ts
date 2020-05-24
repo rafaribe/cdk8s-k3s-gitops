@@ -87,7 +87,7 @@ export class MediaCenter extends Chart {
           name: "downloads",
           path: "/downloads",
           size: "200Gi",
-          reuse: false,
+          reuse: true,
         },
       ],
       ports: [6881, 8080],

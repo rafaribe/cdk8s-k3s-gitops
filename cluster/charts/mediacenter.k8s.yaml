@@ -153,19 +153,6 @@ spec:
       storage: 1Gi
   storageClassName: local-path
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: downloads-pvc
-  namespace: media-center
-spec:
-  accessModes:
-    - Rr
-  resources:
-    requests:
-      storage: 200Gi
-  storageClassName: local-path
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
