@@ -10,22 +10,31 @@ export function ensureTargetPortsAreFilled(ports: PortOptions[]) {
   });
 }
 
-export function buildServicePorts(ports: number[], protocol: PortProtocol, name: string): ServicePort[] {
+export interface SimplifiedServicePorts {
+  port: number;
+  targetPort: number;
+}
+
+export function buildServicePorts(
+  ports: SimplifiedServicePorts[],
+  protocol: PortProtocol,
+  name: string,
+): ServicePort[] {
   let result: ServicePort[] = [];
   ports.forEach(function (port) {
     if (protocol == PortProtocol.UDP) {
       const udpPort: ServicePort = {
-        port: port,
-        targetPort: port,
-        name: name + "-udp-" + port,
+        port: port.port,
+        targetPort: port.targetPort,
+        name: name + "-udp-" + port.port,
         protocol: "UDP",
       };
       result.push(udpPort);
     } else {
       const tcpPort: ServicePort = {
-        port: port,
-        targetPort: port,
-        name: name + "-tcp-" + port,
+        port: port.port,
+        targetPort: port.targetPort,
+        name: name + "-tcp-" + port.port,
         protocol: "TCP",
       };
       result.push(tcpPort);

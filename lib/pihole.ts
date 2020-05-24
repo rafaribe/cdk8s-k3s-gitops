@@ -137,7 +137,10 @@ export class PiHole extends Construct {
     new MetalLbService(this, {
       labels: labels,
       ipAddress: "192.168.1.230",
-      ports: [80, 53],
+      ports: [
+        { port: 80, targetPort: 80 },
+        { port: 53, targetPort: 53 },
+      ],
       name: options.name,
       namespace: options.ns,
     });

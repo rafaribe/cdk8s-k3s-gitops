@@ -1,13 +1,13 @@
 import { Construct } from "constructs";
 import { Service, ServicePort } from "../imports/k8s";
-import { buildServicePorts } from "./utils";
+import { buildServicePorts, SimplifiedServicePorts } from "./utils";
 
 export interface MetalLbServiceOptions {
   /**
    * Ports to expose via TCP and UDP
    *
    */
-  readonly ports: number[];
+  readonly ports: SimplifiedServicePorts[];
 
   /**
    * Service-Names

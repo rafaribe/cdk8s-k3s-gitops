@@ -2,6 +2,7 @@ import { Construct } from "constructs";
 import { Deployment, Quantity, Volume, VolumeMount } from "../imports/k8s";
 import { LocalPathPVC } from "./local-path-pvc";
 import { MetalLbService } from "./metallb-service";
+import { SimplifiedServicePorts } from "./utils";
 
 export interface LinuxServerVolumeOptions {
   readonly name: string;
@@ -16,7 +17,7 @@ export interface LinuxServerAppOptions {
   readonly image: string;
   readonly volumes: LinuxServerVolumeOptions[];
   readonly timezone: string;
-  readonly ports: number[];
+  readonly ports: SimplifiedServicePorts[];
   readonly ipAddress: string;
 }
 export class LinuxServerApp extends Construct {
