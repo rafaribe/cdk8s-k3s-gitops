@@ -8,6 +8,124 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: qbittorrent
+  namespace: media-center
+spec:
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Europe/Lisbon
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK_SET
+              value: "022"
+          image: linuxserver/qbittorrent:14.2.0.99201912180418-6819-118af03ubuntu18.04.1-ls62
+          imagePullPolicy: IfNotPresent
+          name: qbittorrent
+          resources:
+            limits:
+              cpu: 100m
+              memory: 400Mi
+          volumeMounts:
+            - mountPath: /config
+              name: qbittorrent-config
+            - mountPath: /downloads
+              name: downloads
+      volumes:
+        - name: qbittorrent-config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "true"
+  labels:
+    app: qbittorrent
+  name: qbittorrent-tcp
+  namespace: media-center
+spec:
+  loadBalancerIP: 192.168.1.232
+  ports:
+    - name: qbittorrent-tcp-6881
+      port: 6881
+      protocol: TCP
+      targetPort: 6881
+    - name: qbittorrent-tcp-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: qbittorrent
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "true"
+  labels:
+    app: qbittorrent
+  name: qbittorrent-udp
+  namespace: media-center
+spec:
+  loadBalancerIP: 192.168.1.232
+  ports:
+    - name: qbittorrent-udp-6881
+      port: 6881
+      protocol: UDP
+      targetPort: 6881
+    - name: qbittorrent-udp-8080
+      port: 8080
+      protocol: UDP
+      targetPort: 8080
+  selector:
+    app: qbittorrent
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-config-pvc
+  namespace: media-center
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-pvc
+  namespace: media-center
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi
+  storageClassName: local-path
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: jackett
   namespace: media-center
 spec:

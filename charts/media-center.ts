@@ -18,6 +18,29 @@ export class MediaCenter extends Chart {
       },
     });
 
+    new LinuxServerApp(this, "qbittorrent-", {
+      ns: namespace,
+      name: "qbittorrent",
+      volumes: [
+        {
+          name: "qbittorrent-config",
+          path: "/config",
+          size: "1Gi",
+          reuse: false,
+        },
+        {
+          name: "downloads",
+          path: "/downloads",
+          size: "200Gi",
+          reuse: false,
+        },
+      ],
+      ports: [6881, 8080],
+      ipAddress: "192.168.1.232",
+      image: "linuxserver/qbittorrent:14.2.0.99201912180418-6819-118af03ubuntu18.04.1-ls62",
+      timezone: timezone,
+    });
+
     new LinuxServerApp(this, "jackett-", {
       ns: namespace,
       name: "jackett",
