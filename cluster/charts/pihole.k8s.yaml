@@ -52,7 +52,7 @@ spec:
         - env:
             - name: TZ
               value: Europe/Lisbon
-          image: pihole/pihole:4.3.2-1
+          image: pihole/pihole:v5.0-arm64
           imagePullPolicy: IfNotPresent
           name: pihole
           resources:
