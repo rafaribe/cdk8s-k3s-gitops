@@ -75,7 +75,7 @@ export interface ExposedAppOptions {
   readonly pvcSize: string;
 }
 
-const constructId = "unifi-" + Math.random().toString(36).slice(2);
+const constructId = "exposed-app-" + Math.random().toString(36).slice(2);
 
 export class ExposedApp extends Construct {
   constructor(scope: Construct, options: ExposedAppOptions) {

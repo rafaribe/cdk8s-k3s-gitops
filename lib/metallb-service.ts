@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
 import { Service, ServicePort } from "../imports/k8s";
+import { buildServicePorts } from "./utils";
 
 export interface MetalLbServiceOptions {
   /**
@@ -42,8 +43,8 @@ const constructId = "metal-lb.ts-svc-" + Math.random().toString(36).slice(2);
 export class MetalLbService extends Construct {
   constructor(scope: Construct, options: MetalLbServiceOptions) {
     super(scope, constructId);
-    const tcpPorts: ServicePort[] = this.buildServicePorts(options.ports, PortProtocol.TCP, options.name);
-    const udpPorts: ServicePort[] = this.buildServicePorts(options.ports, PortProtocol.UDP, options.name);
+    const tcpPorts: ServicePort[] = buildServicePorts(options.ports, PortProtocol.TCP, options.name);
+    const udpPorts: ServicePort[] = buildServicePorts(options.ports, PortProtocol.UDP, options.name);
     const metalLbAnnotations = {
       ["metallb.universe.tf/allow-shared-ip"]: "true",
     };
@@ -80,29 +81,5 @@ export class MetalLbService extends Construct {
         ports: udpPorts,
       },
     });
-  }
-
-  private buildServicePorts(ports: number[], protocol: PortProtocol, name: string): ServicePort[] {
-    let result: ServicePort[] = [];
-    ports.forEach(function (port) {
-      if (protocol == PortProtocol.UDP) {
-        const udpPort: ServicePort = {
-          port: port,
-          targetPort: port,
-          name: name + "-udp-" + port,
-          protocol: "UDP",
-        };
-        result.push(udpPort);
-      } else {
-        const tcpPort: ServicePort = {
-          port: port,
-          targetPort: port,
-          name: name + "-tcp-" + port,
-          protocol: "TCP",
-        };
-        result.push(tcpPort);
-      }
-    });
-    return result;
   }
 }

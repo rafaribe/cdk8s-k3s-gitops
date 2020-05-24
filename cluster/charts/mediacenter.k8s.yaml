@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    name: media-center
+  name: media-center
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett
+  namespace: media-center
+spec:
+  selector:
+    matchLabels:
+      app: jackett
+  template:
+    metadata:
+      labels:
+        app: jackett
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Europe/Lisbon
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK_SET
+              value: "022"
+          image: linuxserver/jackett:v0.14.49-ls56
+          imagePullPolicy: IfNotPresent
+          name: jackett
+          resources:
+            limits:
+              cpu: 100m
+              memory: 400Mi
+          volumeMounts:
+            - mountPath: /config
+              name: jackett-config
+            - mountPath: /downloads
+              name: downloads
+      volumes:
+        - name: jackett-config
+          persistentVolumeClaim:
+            claimName: jackett-config-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "true"
+  labels:
+    app: jackett
+  name: jackett-tcp
+  namespace: media-center
+spec:
+  loadBalancerIP: 192.168.1.231
+  ports:
+    - name: jackett-tcp-9117
+      port: 9117
+      protocol: TCP
+      targetPort: 9117
+  selector:
+    app: jackett
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "true"
+  labels:
+    app: jackett
+  name: jackett-udp
+  namespace: media-center
+spec:
+  loadBalancerIP: 192.168.1.231
+  ports:
+    - name: jackett-udp-9117
+      port: 9117
+      protocol: UDP
+      targetPort: 9117
+  selector:
+    app: jackett
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jackett-config-pvc
+  namespace: media-center
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
