@@ -11,7 +11,7 @@ export class PiholeDaemon extends Chart {
       replicas: 1,
       name: "pihole",
       timezone: "Europe/Lisbon",
-      image: "pihole/pihole:v5.0-arm64",
+      image: "pihole/pihole:beta-v5.0",
       ns: "pihole",
     });
   }
