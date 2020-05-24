@@ -42,8 +42,8 @@ const constructId = "metal-lb.ts-svc-" + Math.random().toString(36).slice(2);
 export class MetalLbService extends Construct {
   constructor(scope: Construct, options: MetalLbServiceOptions) {
     super(scope, constructId);
-    const tcpPorts: ServicePort[] = this.buildServicePorts(options.ports, PortProtocol.TCP);
-    const udpPorts: ServicePort[] = this.buildServicePorts(options.ports, PortProtocol.UDP);
+    const tcpPorts: ServicePort[] = this.buildServicePorts(options.ports, PortProtocol.TCP, options.name);
+    const udpPorts: ServicePort[] = this.buildServicePorts(options.ports, PortProtocol.UDP, options.name);
     const metalLbAnnotations = {
       ["metallb.universe.tf/allow-shared-ip"]: "true",
     };
@@ -82,13 +82,14 @@ export class MetalLbService extends Construct {
     });
   }
 
-  private buildServicePorts(ports: number[], protocol: PortProtocol): ServicePort[] {
+  private buildServicePorts(ports: number[], protocol: PortProtocol, name: string): ServicePort[] {
     let result: ServicePort[] = [];
     ports.forEach(function (port) {
       if (protocol == PortProtocol.UDP) {
         const udpPort: ServicePort = {
           port: port,
           targetPort: port,
+          name: name + "-udp-" + port,
           protocol: "UDP",
         };
         result.push(udpPort);
@@ -96,6 +97,7 @@ export class MetalLbService extends Construct {
         const tcpPort: ServicePort = {
           port: port,
           targetPort: port,
+          name: name + "-tcp-" + port,
           protocol: "TCP",
         };
         result.push(tcpPort);
