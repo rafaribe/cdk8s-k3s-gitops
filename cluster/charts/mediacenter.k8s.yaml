@@ -10,7 +10,7 @@ kind: StorageClass
 metadata:
   name: sc-escritorio
 provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumerstor
+volumeBindingMode: WaitForFirstConsumer
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -43,6 +43,9 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi
   selector:
     matchLabels:
       directory: downloads

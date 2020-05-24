@@ -1,6 +1,6 @@
 import { App, Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { Namespace, PersistentVolume, PersistentVolumeClaim, StorageClass } from "../imports/k8s";
+import { Namespace, PersistentVolume, PersistentVolumeClaim, Quantity, StorageClass } from "../imports/k8s";
 import { LinuxServerApp } from "../lib/linux-server-app";
 //import { LinuxServerApp } from "../lib/linux-server-app";
 
@@ -25,7 +25,7 @@ export class MediaCenter extends Chart {
       metadata: {
         name: scEscritorioName,
       },
-      volumeBindingMode: "WaitForFirstConsumerstor",
+      volumeBindingMode: "WaitForFirstConsumer",
       provisioner: "kubernetes.io/no-provisioner",
     });
 
@@ -70,6 +70,11 @@ export class MediaCenter extends Chart {
         selector: { matchLabels: pvDownloadsLabels },
         storageClassName: scEscritorioName,
         accessModes: ["ReadWriteMany"],
+        resources: {
+          requests: {
+            storage: Quantity.fromString("200Gi"),
+          },
+        },
       },
     });
 
