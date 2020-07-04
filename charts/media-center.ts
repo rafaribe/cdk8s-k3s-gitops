@@ -19,11 +19,11 @@ export class MediaCenter extends Chart {
     });
 
     const pvDownloadsLabels = { ["directory"]: "downloads" };
-    const scEscritorioName = "sc-escritorio";
+    const scsalatwoName = "sc-salatwo";
     const downloadsPVCName = "downloads-pvc";
-    new StorageClass(this, scEscritorioName, {
+    new StorageClass(this, scsalatwoName, {
       metadata: {
-        name: scEscritorioName,
+        name: scsalatwoName,
       },
       volumeBindingMode: "WaitForFirstConsumer",
       provisioner: "kubernetes.io/no-provisioner",
@@ -35,7 +35,7 @@ export class MediaCenter extends Chart {
         labels: pvDownloadsLabels,
       },
       spec: {
-        storageClassName: scEscritorioName,
+        storageClassName: scsalatwoName,
         capacity: {
           storage: "3Ti",
         },
@@ -51,7 +51,7 @@ export class MediaCenter extends Chart {
                   {
                     key: "kubernetes.io/hostname",
                     operator: "In",
-                    values: ["escritorio"],
+                    values: ["salatwo"],
                   },
                 ],
               },
@@ -68,7 +68,7 @@ export class MediaCenter extends Chart {
       },
       spec: {
         selector: { matchLabels: pvDownloadsLabels },
-        storageClassName: scEscritorioName,
+        storageClassName: scsalatwoName,
         accessModes: ["ReadWriteMany"],
         resources: {
           requests: {
@@ -123,7 +123,7 @@ export class MediaCenter extends Chart {
       ],
       ports: [{ port: 80, targetPort: 9117 }],
       ipAddress: "192.168.1.231",
-      image: "linuxserver/jackett:v0.14.49-ls56",
+      image: "linuxserver/jackett",
       timezone: timezone,
     });
   }

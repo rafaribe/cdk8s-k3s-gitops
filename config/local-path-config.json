@@ -5,10 +5,6 @@
       "paths": ["/opt/local-path-provisioner"]
     },
     {
-      "node": "sala",
-      "paths": ["/mnt/NAS1/cluster", "/mnt/NAS2/cluster"]
-    },
-    {
       "node": "salatwo",
       "paths": ["/media/pi/nasdisk"]
     }
