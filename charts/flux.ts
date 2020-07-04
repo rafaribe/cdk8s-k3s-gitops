@@ -15,7 +15,7 @@ export class FluxDaemon extends Chart {
       arguments: [
         "--memcached-service=",
         "--ssh-keygen-dir=/etc/fluxd/keygen",
-        "--git-url=git@github.com:rafaribe/cdk8s-k3s-gitops.git",
+        "--git-url=git@github.com:rafaribe/cdk8s-k3s-gitops",
         "--git-branch=master",
         "--git-path=cluster",
         "--git-label=flux",
