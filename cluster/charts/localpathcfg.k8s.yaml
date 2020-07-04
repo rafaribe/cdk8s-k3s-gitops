@@ -12,8 +12,8 @@ data:
           "paths": ["/mnt/NAS1/cluster", "/mnt/NAS2/cluster"]
         },
         {
-          "node": "escritorio",
-          "paths": ["/mnt/data"]
+          "node": "salatwo",
+          "paths": ["/media/pi/nasdisk"]
         }
       ]
     }
